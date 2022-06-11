@@ -1,11 +1,24 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import Footer from "../components/Footer";
 import Holder from "../components/Holder";
 import LpTopBar from "../components/LpTopBar";
+import { useGoogleAuth } from "../context/GoogleAuthContext";
 
 const Home = () => {
+  const router = useRouter();
+  const { authUser, loading } = useGoogleAuth();
+
+  // NOTE: If user is already logged in, redirect them to their home
+  useEffect(() => {
+    if (!loading && authUser) {
+      router.push(`/${authUser.userType}`);
+    }
+  }, [authUser, loading]);
+
   return (
     <Holder className="bg-lp-yellow">
       <Head>

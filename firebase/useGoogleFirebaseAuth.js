@@ -1,12 +1,13 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { firebase } from "./firebaseConfig";
+import Swal from "sweetalert2";
 
-const formatAuthUser = (user, uid, email, getIdToken) => ({
+const formatAuthUser = (user, userType, uid, email, getIdToken) => ({
   uid: uid,
   email: email,
   name: user.name,
-  userType: user.userType,
+  userType: userType,
   getIdToken: getIdToken,
 });
 
@@ -17,8 +18,6 @@ export const useGoogleFirebaseAuth = () => {
   const [loading, setLoading] = useState(true);
 
   const authStateChanged = async (authState) => {
-    console.log(authState);
-
     // No user is signed in.
     if (!authState) {
       console.log("No user signed in!");
@@ -33,28 +32,65 @@ export const useGoogleFirebaseAuth = () => {
     // getting user from DB
     const idToken = await authState.getIdToken();
 
-    // initially setting userDetails to be the current authState
-    let userDetails = authState;
+    let userDetails;
 
     const selectedUserType = localStorage.getItem("selectedUserType");
 
-    // Check if user is already present in database
-    const doesUserExist = await fetch(
-      `/api/${selectedUserType}/${authState.uid}/getUser`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-        },
-      }
-    );
+    let isUserStudent;
+    let isUserMentor;
 
-    // if user does not exist in database
-    if (doesUserExist.status === 404) {
-      const currentUserDetails = {
+    // Check if user is already a student
+    isUserStudent = await fetch(`/api/student/${authState.uid}/getUser`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+
+    // Check if user is already a mentor
+    isUserMentor = await fetch(`/api/mentor/${authState.uid}/getUser`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+
+    // if user does not exist in database, ask for details based on user type
+    if (isUserStudent.status === 404 && isUserMentor.status === 404) {
+      let currentUserDetails = {
         email: authState.email,
         name: authState.displayName,
       };
+
+      if (selectedUserType === "student") {
+        const { value: designation } = await Swal.fire({
+          title: "Enter your designation",
+          input: "text",
+          inputLabel: "Your designation",
+          showCancelButton: false,
+          inputValidator: (value) => {
+            if (!value) {
+              return "Enter designation!";
+            }
+          },
+        });
+
+        currentUserDetails.designation = designation;
+      } else {
+        const { value: specialization } = await Swal.fire({
+          title: "Enter your specialization",
+          input: "text",
+          inputLabel: "Your specialization",
+          showCancelButton: false,
+          inputValidator: (value) => {
+            if (!value) {
+              return "Enter specialization!";
+            }
+          },
+        });
+
+        currentUserDetails.specialization = specialization;
+      }
 
       // add user details to database
       userDetails = await fetch(
@@ -69,12 +105,18 @@ export const useGoogleFirebaseAuth = () => {
         }
       );
 
-      userDetails = await userDetails.json();
-
-      console.log("User details from firebase", userDetails);
+      userDetails = currentUserDetails;
     } else {
-      userDetails = await doesUserExist.json();
-      console.log("User exists in database", userDetails);
+      // Changing user type automatically if the user has chosen wrong user type
+      if (isUserStudent.status === 200) {
+        userDetails = await isUserStudent.json();
+        selectedUserType = "student";
+      }
+
+      if (isUserMentor.status === 200) {
+        userDetails = await isUserMentor.json();
+        selectedUserType = "mentor";
+      }
     }
 
     // If some error occurs, push back to error page
@@ -88,6 +130,7 @@ export const useGoogleFirebaseAuth = () => {
 
     var formattedUser = formatAuthUser(
       userDetails,
+      selectedUserType,
       authState.uid,
       authState.email,
       () => authState.getIdToken()
