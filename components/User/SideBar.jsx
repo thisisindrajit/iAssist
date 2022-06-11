@@ -9,7 +9,7 @@ const RandomAvatar = dynamic(() => import("../RandomAvatar"), {
 const SideBar = ({ userType }) => {
   // Show different sidebars based on different type of user
   return (
-    <div className="w-1/5 bg-sidebar-grey min-h-screen sticky p-6">
+    <div className="w-1/5 bg-sidebar-grey min-h-screen fixed p-6">
       {/* Welcome back section */}
       <div className="flex items-center gap-4">
         {/* Random logo */}
@@ -28,8 +28,8 @@ const SideBar = ({ userType }) => {
       {/* Types of queries based on user */}
       {userType === 1 ? (
         <div>
-          <QueryType title="Unresolved Queries" count="5" />
-          <QueryType title="Resolved Queries" />
+          <QueryType title="Unresolved Queries" count="5" href="#unresolved"/>
+          <QueryType title="Resolved Queries" href="#resolved" />
         </div>
       ) : (
         <div>Mentor</div>

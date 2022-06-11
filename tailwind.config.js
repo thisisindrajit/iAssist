@@ -14,13 +14,15 @@ module.exports = {
       },
       borderColor: {
         "gold-yellow": "#FBB034",
+        "medium-blue-1": "#6989FE",
       },
       backgroundColor: {
-        "lp-yellow": "#fefcf5",
+        "lp-yellow": "#FEFCF5",
         "medium-grey": "#757D8A",
         "gold-yellow": "#FBB034",
         "sidebar-grey": "#F8F8F8",
         "medium-blue-1": "#6989FE",
+        "stats-bg": "#F2F5FF",
       },
     },
   },
