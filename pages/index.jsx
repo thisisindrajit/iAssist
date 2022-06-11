@@ -23,7 +23,7 @@ const Home = () => {
               (abbreviated as iNeuron Assist)
             </div>
             {/* Horizontal line */}
-            <div className="h-0.5 bg-black"></div>
+            <div className="h-0.5 bg-black w-full"></div>
             <div className="text-xl leading-relaxed">
               A{" "}
               <span className="font-bold italic">

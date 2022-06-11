@@ -1,6 +1,5 @@
 import React from "react";
-import Document from "next/document";
-import Head from "next/head";
+import { GoogleAuthUserProvider } from "../context/GoogleAuthContext";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
@@ -8,7 +7,9 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <Layout>
-      <Component {...pageProps} />
+      <GoogleAuthUserProvider>
+        <Component {...pageProps} />
+      </GoogleAuthUserProvider>
     </Layout>
   );
 }

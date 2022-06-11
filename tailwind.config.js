@@ -16,6 +16,7 @@ module.exports = {
       },
       backgroundColor: {
         "lp-yellow": "#fefcf5",
+        "gold-yellow": "#FBB034",
         "sidebar-grey": "#F8F8F8"
       },
     },
