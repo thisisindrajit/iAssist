@@ -1,8 +1,8 @@
 import { firebase } from "/firebase/firebaseConfig";
 
 export const createUser = async (userType, uid, userDetails) => {
-    const userRef = await firebase.firestore().collection(userType);
-    userRef.doc(uid).set(userDetails);
+  const userRef = await firebase.firestore().collection(userType);
+  userRef.doc(uid).set(userDetails);
 };
 
 export default async function handler(req, res) {
