@@ -25,7 +25,7 @@ const StudentHome = () => {
   }, [authUser, loading]);
 
   return (
-    <div className="min-h-screen p-6">
+    <div>
       <Head>
         <title>Student Home - iAssist</title>
       </Head>
@@ -45,13 +45,16 @@ const StudentHome = () => {
           assignedTo="Dhilip"
           askedOn="23/10/2021"
           category="frontend"
+          href="/student/query/123"
         />
+
         <StudentQueryBox
           title="What is useEffect in React?"
           status="completed"
           assignedTo="Dhilip"
           askedOn="23/10/2021"
           category="backend"
+          href="/student/query/123"
         />
         <StudentQueryBox
           title="What is useEffect in React?"
@@ -59,6 +62,7 @@ const StudentHome = () => {
           assignedTo="Dhilip"
           askedOn="23/10/2021"
           category="frontend"
+          href="/student/query/123"
         />
         <StudentQueryBox
           title="What is useEffect in React?"
@@ -66,6 +70,7 @@ const StudentHome = () => {
           assignedTo="Dhilip"
           askedOn="23/10/2021"
           category="other"
+          href="/student/query/123"
         />
       </div>
       {/* Resolved Queries */}
@@ -78,6 +83,7 @@ const StudentHome = () => {
           assignedTo="Dhilip"
           askedOn="23/10/2021"
           category="frontend"
+          href="/student/query/123"
           isResolved
         />
         <StudentQueryBox
@@ -86,6 +92,7 @@ const StudentHome = () => {
           assignedTo="Dhilip"
           askedOn="23/10/2021"
           category="backend"
+          href="/student/query/123"
           isResolved
         />
         <StudentQueryBox
@@ -94,6 +101,7 @@ const StudentHome = () => {
           assignedTo="Dhilip"
           askedOn="23/10/2021"
           category="frontend"
+          href="/student/query/123"
           isResolved
         />
         <StudentQueryBox
@@ -102,6 +110,7 @@ const StudentHome = () => {
           assignedTo="Dhilip"
           askedOn="23/10/2021"
           category="other"
+          href="/student/query/123"
           isResolved
         />
       </div>

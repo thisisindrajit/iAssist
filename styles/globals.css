@@ -30,3 +30,22 @@ body {
 .query-box-shadow {
   box-shadow: 0px 8px 24px -4px rgba(27, 46, 94, 0.12);
 }
+
+/* update discussion styling */
+.update {
+  display: flex;
+  flex-direction: row;
+}
+.update:before,
+.update:after {
+  content: "";
+  flex: 1 1;
+  border-bottom: 1px solid;
+  margin: auto;
+}
+.update:before {
+  margin-right: 10px;
+}
+.update:after {
+  margin-left: 10px;
+}
