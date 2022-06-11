@@ -7,11 +7,16 @@ module.exports = {
   ],
   theme: {
     extend: {
+      textColor:{
+        "medium-grey":"#757D8A",
+        "dark-grey":"#5A6474"
+      },
       borderColor: {
         "gold-yellow": "#FBB034",
       },
       backgroundColor: {
         "lp-yellow": "#fefcf5",
+        "sidebar-grey": "#F8F8F8"
       },
     },
   },
