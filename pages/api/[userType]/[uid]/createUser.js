@@ -16,7 +16,7 @@ export default async function handler(req, res) {
         return res.status(200).json(await createUser(userType, uid, userDetails));
     }
     catch(error){
-        console.error("Error in query createUser ", error);
-        return null;
+        console.error("Error in createUser ", error);
+        return res.status(500).json({ error: "Error in createUser" });
     }
 }
