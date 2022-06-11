@@ -54,12 +54,11 @@ export const useGoogleFirebaseAuth = () => {
       const currentUserDetails = {
         email: authState.email,
         name: authState.displayName,
-        photoURL: authState.photoURL,
       };
 
       // add user details to database
       userDetails = await fetch(
-        `/api/${selectedUserType}/${authState.uid}/setUser`,
+        `/api/${selectedUserType}/${authState.uid}/createUser`,
         {
           method: "POST",
           headers: {

@@ -34,7 +34,7 @@ const Home = () => {
             {/* Login button */}
             <Link href="/login">
               <div className="border-2 border-black p-3 w-fit text-sm rounded-md cursor-pointer hover:bg-black hover:text-white transition-all">
-                Clear my doubts!
+                Start using iAssist!
               </div>
             </Link>
           </div>
