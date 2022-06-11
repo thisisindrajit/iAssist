@@ -13,7 +13,7 @@ export const getQuery = async (qid) => {
 export default async function handler(req, res) {
     try{
         const {qid} = req.query;
-        query = await getQuery(qid);
+        const query = await getQuery(qid);
         if(query)
             return res.status(200).json(query);
         else
