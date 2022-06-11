@@ -1,15 +1,22 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 import TitleWithLine from "../../components/TitleWithLine";
 import Stats from "../../components/User/Stats";
 import StudentQueryBox from "../../components/User/StudentQueryBox";
-import { useGoogleAuth } from "../../context/GoogleAuthContext";
 import studentLayout from "../../layouts/studentLayout";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useGoogleAuth } from "../../context/GoogleAuthContext";
+import Image from "next/image";
 
 const StudentHome = () => {
   const router = useRouter();
   const { authUser, loading } = useGoogleAuth();
+
+  useEffect(() => {
+    if (!loading && !authUser) {
+      router.push(`/`);
+    }
+  }, [authUser, loading]);
 
   // TODO: Get data from API
   const sampleStats = {
@@ -18,20 +25,19 @@ const StudentHome = () => {
     unresolvedQueries: "2",
   };
 
-  useEffect(() => {
-    if (!loading && !authUser) {
-      router.push(`/`);
-    }
-  }, [authUser, loading]);
-
-  return (
+  return !loading && authUser ? (
     <div>
       <Head>
-        <title>Student Home - iAssist</title>
+        <title>{authUser.name} - Home</title>
       </Head>
+      {/* New query button */}
+      <div className="rounded-full fixed p-6 bottom-6 right-6 cursor-pointer bg-medium-purple-1 flex items-center justify-center h-10 w-10">
+        <Image src="/svg/plus.svg"layout="fill"
+            objectFit="contain" />
+      </div>
       {/* Welcome section */}
       <div className="text-2xl text-dark-grey">
-        ☀️ Good day, <span className="font-bold">Indrajit</span>
+        ☀️ Good day, <span className="font-bold">{authUser.name}</span>
       </div>
       {/* Stats Section */}
       <Stats userType="student" stats={sampleStats} />
@@ -115,6 +121,8 @@ const StudentHome = () => {
         />
       </div>
     </div>
+  ) : (
+    <div>Loading...</div>
   );
 };
 

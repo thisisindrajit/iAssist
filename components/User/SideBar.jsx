@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic";
 import QueryType from "./QueryType";
 import { logout } from "../../utilities/googleAuthUtilities";
-import Image from "next/image";
 
 // Dynamically loading the component with server side rendering to be false to generate different image each time
 const RandomAvatar = dynamic(() => import("../RandomAvatar"), {

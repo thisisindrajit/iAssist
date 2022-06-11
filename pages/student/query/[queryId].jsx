@@ -1,22 +1,31 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
 import BackButton from "../../../components/BackButton";
 import TitleWithLine from "../../../components/TitleWithLine";
 import QueryStatusIndicator from "../../../components/User/QueryStatusIndicator";
 import studentLayout from "../../../layouts/studentLayout";
 import DiscussionBox from "../../../components/User/DiscussionBox";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useGoogleAuth } from "../../../context/GoogleAuthContext";
 
 const SpecificQuery = () => {
   const router = useRouter();
   const { queryId } = router.query;
   const isResolved = false;
+  const { authUser, loading } = useGoogleAuth();
+
+  useEffect(() => {
+    if (!loading && !authUser) {
+      router.push(`/`);
+    }
+  }, [authUser, loading]);
 
   return (
     <div>
       <Head>
         <title>Query Title</title>
       </Head>
-      <div class="flex flex-col gap-5">
+      <div className="flex flex-col gap-5">
         <div className="flex gap-4 items-center">
           <BackButton router={router} />
           {/* Title and button */}

@@ -16,6 +16,7 @@ const generateRandomString = (length) => {
 
 const getRandomAvatarLink = (mouth) => {
   let link = createAvatar(style, {
+    sprites: "male",
     seed: generateRandomString(5),
     dataUri: true,
     mouth: mouth,
