@@ -13,7 +13,8 @@ export default async function handler(req, res) {
     try{
         const {userType, uid} = req.query;
         const userDetails = req.body;
-        return res.status(200).json(await createUser(userType, uid, userDetails));
+        await createUser(userType, uid, userDetails)
+        return res.status(200).json({ message: "Successfully created user" });
     }
     catch(error){
         console.error("Error in createUser ", error);

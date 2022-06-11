@@ -1,6 +1,6 @@
 import { firebase } from "/firebase/firebaseConfig";
 
-export const createQuery = async (qid, updateDetails) => {
+export const createUpdate = async (qid, updateDetails) => {
     const updateRef = await firebase.firestore()
                             .collection("query")
                             .doc(qid)
@@ -16,10 +16,11 @@ export default async function handler(req, res) {
     try{
         const {qid} = req.query;
         const updateDetails = req.body;
-        return res.status(200).json(await createQuery(qid, updateDetails));
+        await createUpdate(qid, updateDetails)
+        return res.status(200).json({ message: "Successfully created update" });
     }
     catch(error){
-        console.error("Error in createUser ", error);
-        return res.status(500).json({ error: "Error in createUser" });
+        console.error("Error in createUpdate ", error);
+        return res.status(500).json({ error: "Error in createUpdate" });
     }
 }
