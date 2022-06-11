@@ -11,6 +11,7 @@
   "dependencies": {
     "@dicebear/avatars": "^4.10.2",
     "@dicebear/micah": "^4.10.2",
+    "firebase": "^9.8.3",
     "next": "12.1.6",
     "react": "18.1.0",
     "react-dom": "18.1.0",
