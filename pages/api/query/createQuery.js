@@ -5,7 +5,7 @@ export const createQuery = async (queryDetails) => {
     await queryRef.add(queryDetails);
 };
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== "POST") {
         return res.status(405).json({ message: "Only POST requests allowed" });
     }
@@ -20,3 +20,5 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: "Error in query createQuery" });
     }
 }
+
+export default withAuth(handler);

@@ -1,4 +1,5 @@
 import { firebase } from "/firebase/firebaseConfig";
+import { withAuth } from "../../../../../utilities/withAuth";
 
 export const resolved = async (userType, uid) => {
     const queryUserRef = firebase.firestore()
@@ -13,7 +14,7 @@ export const resolved = async (userType, uid) => {
     }));
 };
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     try{
         const {userType, uid} = req.query;
         return res.status(200).json(await resolved(userType, uid));
@@ -23,3 +24,5 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: "Error in getting resolved queries" });
     }    
 }
+
+export default withAuth(handler);

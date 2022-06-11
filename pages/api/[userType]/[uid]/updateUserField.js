@@ -1,4 +1,5 @@
 import { firebase } from "/firebase/firebaseConfig";
+import { withAuth } from "../../../../utilities/withAuth";
 
 export const updateUserField = async (userType, uid, updatedFieldValue) => {
     const userRef = firebase.firestore()
@@ -7,7 +8,7 @@ export const updateUserField = async (userType, uid, updatedFieldValue) => {
     await userRef.update(updatedFieldValue);
 };
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== "POST") {
         return res.status(405).json({ message: "Only POST requests allowed" });
     }
@@ -24,3 +25,5 @@ export default async function handler(req, res) {
     }
     
 }
+
+export default withAuth(handler);

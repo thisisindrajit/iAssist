@@ -1,3 +1,4 @@
+import { withAuth } from "../../../../utilities/withAuth";
 import { firebase } from "/firebase/firebaseConfig";
 
 export const getQuery = async (qid) => {
@@ -10,7 +11,7 @@ export const getQuery = async (qid) => {
         return null;
 };
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     try{
         const {qid} = req.query;
         const query = await getQuery(qid);
@@ -25,3 +26,5 @@ export default async function handler(req, res) {
     }
     
 }
+
+export default withAuth(handler);

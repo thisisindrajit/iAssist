@@ -1,4 +1,5 @@
 import { firebase } from "/firebase/firebaseConfig";
+import { withAuth } from "../../../../utilities/withAuth";
 
 export const getUser = async (userType, uid) => {
   const snapshot = await firebase
@@ -10,7 +11,7 @@ export const getUser = async (userType, uid) => {
   else return null;
 };
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   try {
     const { userType, uid } = req.query;
     const user = await getUser(userType, uid);
@@ -21,3 +22,5 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "Error in getUser" });
   }
 }
+
+export default withAuth(handler);

@@ -1,4 +1,5 @@
 import { firebase } from "/firebase/firebaseConfig";
+import { withAuth } from "../../../../../utilities/withAuth";
 
 export const createUpdate = async (qid, updateDetails) => {
     const updateRef = await firebase.firestore()
@@ -8,7 +9,7 @@ export const createUpdate = async (qid, updateDetails) => {
     updateRef.add(updateDetails);
 };
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== "POST") {
         return res.status(405).json({ message: "Only POST requests allowed" });
     }
@@ -24,3 +25,5 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: "Error in createUpdate" });
     }
 }
+
+export default withAuth(handler);

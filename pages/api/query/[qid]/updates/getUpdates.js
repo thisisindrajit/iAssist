@@ -1,4 +1,5 @@
 import { firebase } from "/firebase/firebaseConfig";
+import { withAuth } from "../../../../../utilities/withAuth";
 
 export const getUpdates = async (qid) => {
     const snapshot = await firebase.firestore()
@@ -12,7 +13,7 @@ export const getUpdates = async (qid) => {
     }));
 };
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     try{
         const {qid} = req.query;
         return res.status(200).json(await getUpdates(qid));
@@ -22,3 +23,5 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: "Error in getUpdates" });
     }
 }
+
+export default withAuth(handler);

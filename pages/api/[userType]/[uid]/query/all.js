@@ -1,5 +1,6 @@
 import { resolved } from "./resolved";
 import { unresolved } from "./unresolved";
+import { withAuth } from "../../../../../utilities/withAuth";
 
 export const allQueries = async (userType, uid) => {
     const resolvedQueries = await resolved(userType, uid);
@@ -9,7 +10,7 @@ export const allQueries = async (userType, uid) => {
         "unresolved" : unresolvedQueries};
 };
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     try{
         const {userType, uid} = req.query;
         return res.status(200).json(await allQueries(userType, uid));
@@ -20,3 +21,5 @@ export default async function handler(req, res) {
     }
     
 }
+
+export default withAuth(handler);

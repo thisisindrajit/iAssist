@@ -1,11 +1,12 @@
 import { firebase } from "/firebase/firebaseConfig";
+import { withAuth } from "../../../../utilities/withAuth";
 
 export const createUser = async (userType, uid, userDetails) => {
   const userRef = await firebase.firestore().collection(userType);
   userRef.doc(uid).set(userDetails);
 };
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== "POST") {
         return res.status(405).json({ message: "Only POST requests allowed" });
     }
@@ -21,3 +22,5 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: "Error in createUser" });
     }
 }
+
+export default withAuth(handler);
