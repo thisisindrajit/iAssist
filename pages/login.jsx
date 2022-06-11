@@ -88,7 +88,7 @@ const Login = () => {
               {/* Horizontal line */}
               <div className="h-0.5 bg-black w-full"></div>
               {/* Sign in/ Sign up button */}
-              <span className="leading-loose text-base text-center">
+              <span className="font-bold leading-loose text-base text-center">
                 Whether you want to sign in or sign up, just click on the button
                 below!
               </span>

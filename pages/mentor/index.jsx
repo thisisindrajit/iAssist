@@ -15,7 +15,7 @@ const MentorHome = () => {
   }, [authUser, loading]);
 
   return (
-    <div className="h-screen w-4/5 p-6">
+    <div className="h-screen w-4/5 p-6 absolute right-0 top-0">
       This is mentor home
       <div onClick={() => logout()}>Logout</div>
     </div>
