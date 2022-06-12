@@ -11,7 +11,7 @@ const ChatBox = ({ discussion, discussedOn, userName, isUser, isUpdate }) => {
       <div className="font-semibold">{discussion}</div>
       {discussedOn ? (
         <div className="text-gold-yellow">
-          {userName} on {discussedOn}
+          {discussedOn}
         </div>
       ) : (
         <div className="text-gold-yellow">{userName} - {convertToPrettyDateFormat(new Date().getTime()/1000)}</div>

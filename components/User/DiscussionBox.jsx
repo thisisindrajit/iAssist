@@ -1,6 +1,6 @@
 import { useGoogleAuth } from "../../context/GoogleAuthContext";
 import ChatBox from "./ChatBox";
-import convertToPrettyDateFormat from "/utilities/prettyDateFormat"
+import convertToPrettyDateFormat from "/utilities/prettyDateFormat";
 import postData from "../../utilities/api/postData";
 
 const { useState } = require("react");
@@ -8,21 +8,24 @@ const { useState } = require("react");
 const DiscussionBox = ({ discussionData, queryId }) => {
   const [message, setMessage] = useState("");
   const { authUser } = useGoogleAuth();
-  const [stateDiscussionData, setStateDiscussionData] = useState(discussionData)
-  
+  const [stateDiscussionData, setStateDiscussionData] =
+    useState(discussionData);
+
   const onclickSend = async () => {
-    if (authUser && message) {
+    if (authUser && message.length > 0) {
       let url = `/api/query/${queryId}/updates/createUpdate`;
       let token = await authUser.getIdToken();
 
       const details = {
         update_message: message,
-        update_type: authUser.userType + "_update"
+        update_type: authUser.userType + "_update",
       };
 
       await postData(url, token, details);
-      setStateDiscussionData([...stateDiscussionData, details])
-      setMessage("")
+      setStateDiscussionData([...stateDiscussionData, details]);
+      setMessage("");
+    } else {
+      alert("Message must not be empty!");
     }
   };
   return (
@@ -31,10 +34,15 @@ const DiscussionBox = ({ discussionData, queryId }) => {
         {stateDiscussionData.length > 0 ? (
           stateDiscussionData.map((discussion, i) => {
             return (
-              <ChatBox key={i}
+              <ChatBox
+                key={i}
                 discussion={discussion.update_message}
                 isUpdate={discussion.update_type === "status_update"}
-                discussedOn={(discussion?.update_time?.seconds ? convertToPrettyDateFormat(discussion.update_time.seconds) : convertToPrettyDateFormat(new Date().getTime()/1000))}
+                discussedOn={
+                  discussion?.update_time?.seconds
+                    ? convertToPrettyDateFormat(discussion.update_time.seconds)
+                    : convertToPrettyDateFormat(new Date().getTime() / 1000)
+                }
               />
             );
           })
@@ -54,7 +62,10 @@ const DiscussionBox = ({ discussionData, queryId }) => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <div onClick={() => onclickSend()} className="bg-medium-blue-1 shadow-xl px-4 py-2 text-sm rounded-md text-white flex items-center justify-center">
+        <div
+          onClick={() => onclickSend()}
+          className="bg-medium-blue-1 shadow-xl px-4 py-2 text-sm rounded-md text-white flex items-center justify-center cursor-pointer"
+        >
           Send
         </div>
       </div>
