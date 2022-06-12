@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useGoogleAuth } from "../../context/GoogleAuthContext";
+import ChatBox from "../User/ChatBox";
 import { useChannel } from "./AblyReactEffect";
 
 const AblyChatComponent = ({ channelName }) => {
@@ -24,8 +25,7 @@ const AblyChatComponent = ({ channelName }) => {
   });
 
   const sendChatMessage = (messageText) => {
-    console.log(authUser.uid);
-    channel.publish({ name: authUser.uid, data: messageText });
+    channel.publish({ name: authUser.name, data: messageText });
     setMessageText("");
     inputBox.focus();
   };
@@ -44,11 +44,16 @@ const AblyChatComponent = ({ channelName }) => {
   };
 
   const messages = receivedMessages.map((message, index) => {
-    const author = message.connectionId === ably.connection.id ? "me" : "other";
+    const author =
+      message.connectionId === ably.connection.id ? "Me" : message.name;
     return (
-      <span key={index} data-author={author} data-author-id={authUser.uid}>
-        {message.data}
-      </span>
+      // <span key={index} data-author={author} data-author-id={authUser.uid}></span>
+      <ChatBox
+        key={index}
+        discussion={message.data}
+        userName={author}
+        isUser={author.toString().toLowerCase() === "me"}
+      />
     );
   });
 
@@ -58,27 +63,36 @@ const AblyChatComponent = ({ channelName }) => {
 
   return (
     <div>
-      <div>
-        {messages}
+      <div className="text-sm flex flex-col gap-4">
+        {messages.length > 0 ? messages : <div className="m-auto my-4 font-bold">No messages yet!</div>}
         <div
           ref={(element) => {
             messageEnd = element;
           }}
-        ></div>{" "}
+        ></div>
       </div>
+
       <form onSubmit={handleFormSubmission}>
-        <textarea
-          ref={(element) => {
-            inputBox = element;
-          }}
-          value={messageText}
-          placeholder="Type a message..."
-          onChange={(e) => setMessageText(e.target.value)}
-          onKeyPress={handleKeyPress}
-        ></textarea>
-        <button type="submit" disabled={messageTextIsEmpty}>
-          Send
-        </button>
+        <div className="sticky px-6 py-4 w-full rounded-md flex gap-2 bg-gray-100">
+          <input
+            ref={(element) => {
+              inputBox = element;
+            }}
+            className="p-2 w-full text-sm shadow-xl outline-none border-2 border-medium-blue-1 rounded-md"
+            type="text"
+            placeholder="Write a message"
+            value={messageText}
+            onKeyPress={handleKeyPress}
+            onChange={(e) => setMessageText(e.target.value)}
+          />
+          <button
+            type="submit"
+            className="bg-medium-blue-1 shadow-xl px-4 py-2 text-sm rounded-md text-white flex items-center justify-center"
+            disabled={messageTextIsEmpty}
+          >
+            Send
+          </button>
+        </div>
       </form>
     </div>
   );

@@ -1,10 +1,9 @@
 import SideBar from "../components/User/SideBar";
 
-const studentLayout = ({ children }) => {
-  
+const mentorLayout = ({ children }) => {
   return (
     <div className="flex">
-      <SideBar userType="student" />
+      <SideBar userType="mentor" />
       <div className="w-4/5 min-h-screen p-6" style={{ marginLeft: "20%" }}>
         {children}
       </div>
@@ -12,4 +11,4 @@ const studentLayout = ({ children }) => {
   );
 };
 
-export default studentLayout;
+export default mentorLayout;

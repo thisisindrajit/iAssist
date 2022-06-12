@@ -7,9 +7,13 @@ const ChatBox = ({ discussion, discussedOn, userName, isUser, isUpdate }) => {
       }`}
     >
       <div>{discussion}</div>
-      <div className="text-gold-yellow">
-        {userName} on {discussedOn}
-      </div>
+      {discussedOn ? (
+        <div className="text-gold-yellow">
+          {userName} on {discussedOn}
+        </div>
+      ) : (
+        <div className="text-gold-yellow">{userName}</div>
+      )}
     </div>
   ) : (
     <div className="text-medium-purple-1 update">{discussion}</div>
