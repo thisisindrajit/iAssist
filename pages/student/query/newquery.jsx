@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import CustomInput from "../../../components/User/CustomInput";
 import { useGoogleAuth } from "../../../context/GoogleAuthContext";
 import studentLayout from "../../../layouts/studentLayout";
+import postData from "../../../utilities/api/postData";
 
 const { default: Head } = require("next/head");
 const { default: BackButton } = require("../../../components/BackButton");
@@ -25,13 +26,31 @@ const NewQuery = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    setQueryCreating(true);
 
-    // set query details in backend here
+    if (authUser) {
+      setQueryCreating(true);
 
-    setQueryCreating(false);
+      const queryDetails = {
+        title: title,
+        description: description,
+        category: category,
+        query_status: "unresolved",
+        student_id: authUser.uid,
+      };
 
-    router.push("/student/query/123/chat");
+      const token = await authUser.getIdToken();
+
+      // set query details in backend here
+      const newQueryId = await postData(
+        "/query/createQuery",
+        token,
+        queryDetails
+      );
+
+      setQueryCreating(false);
+
+      router.push(`/student/query/${newQueryId.queryId}/chat`);
+    }
   };
 
   return (

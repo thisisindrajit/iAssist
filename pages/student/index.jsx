@@ -7,8 +7,6 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useGoogleAuth } from "../../context/GoogleAuthContext";
 import Image from "next/image";
-import getData from "../../utilities/api/getData";
-import { useQuery } from "react-query";
 import Link from "../../components/Link";
 
 const StudentHome = () => {
@@ -32,7 +30,7 @@ const StudentHome = () => {
             authUser.userType +
             "/" +
             authUser.uid +
-            "/query/queryStatus/all",
+            "/query/queryStatus/getCount",
           {
             method: "GET",
             headers: {

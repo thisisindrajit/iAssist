@@ -6,6 +6,7 @@ const StudentQueryBox = ({
   status,
   assignedTo,
   askedOn,
+  askedBy,
   category,
   isResolved,
   href
@@ -20,12 +21,15 @@ const StudentQueryBox = ({
         <div className="whitespace-nowrap overflow-hidden text-ellipsis text-medium-blue-1 font-bold">
           {title}
         </div>
-        {/* status and assigned to */}
+        {/* status and assigned to / asked by */}
         <div className="flex gap-2 items-center">
-          {!isResolved && <QueryStatusIndicator status={status} />}
-          <div className="text-xs font-bold text-medium-grey">
+          {!isResolved && status && <QueryStatusIndicator status={status} />}
+          {assignedTo && <div className="text-xs font-bold text-medium-grey">
             Assigned to {assignedTo}
-          </div>
+          </div>}
+          {askedBy && <div className="text-xs font-bold text-medium-grey">
+            Asked by {askedBy}
+          </div>}
         </div>
         {/* Asked on and category */}
         <div className="flex gap-2 items-center">
