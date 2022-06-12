@@ -1,12 +1,12 @@
 import Head from "next/head";
-import BackButton from "../../../components/BackButton";
-import TitleWithLine from "../../../components/TitleWithLine";
-import QueryStatusIndicator from "../../../components/User/QueryStatusIndicator";
-import studentLayout from "../../../layouts/studentLayout";
-import DiscussionBox from "../../../components/User/DiscussionBox";
+import BackButton from "../../../../components/BackButton";
+import TitleWithLine from "../../../../components/TitleWithLine";
+import QueryStatusIndicator from "../../../../components/User/QueryStatusIndicator";
+import studentLayout from "../../../../layouts/studentLayout";
+import DiscussionBox from "../../../../components/User/DiscussionBox";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { useGoogleAuth } from "../../../context/GoogleAuthContext";
+import { useGoogleAuth } from "../../../../context/GoogleAuthContext";
 
 const SpecificQuery = () => {
   const router = useRouter();
