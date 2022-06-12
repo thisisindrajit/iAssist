@@ -5,7 +5,7 @@ import QueryStatusIndicator from "../../../../components/User/QueryStatusIndicat
 import studentLayout from "../../../../layouts/studentLayout";
 import DiscussionBox from "../../../../components/User/DiscussionBox";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useGoogleAuth } from "../../../../context/GoogleAuthContext";
 
 const SpecificQuery = () => {
@@ -13,6 +13,8 @@ const SpecificQuery = () => {
   const { queryId } = router.query;
   const isResolved = false;
   const { authUser, loading } = useGoogleAuth();
+  const [queryDetails, setQueryDetails] = useState(null);
+
 
   useEffect(() => {
     if (!loading && !authUser) {
@@ -20,10 +22,36 @@ const SpecificQuery = () => {
     }
   }, [authUser, loading]);
 
+  useEffect(() => {
+    const getQueryDetails = async () => {
+      if (authUser) {
+        const token = await authUser.getIdToken();
+        let queryDetailsUrl = "/api/query/"+queryId;
+
+        fetch(
+          queryDetailsUrl,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            setQueryDetails(data);
+          });
+      }
+    };
+
+    getQueryDetails();
+  }, [authUser]);
+
   return (
-    <div>
+    queryDetails ? <div>
       <Head>
-        <title>Query Title</title>
+        <title>{queryDetails.title}</title>
       </Head>
       <div className="flex flex-col gap-5">
         <div className="flex gap-4 items-center">
@@ -31,7 +59,7 @@ const SpecificQuery = () => {
           {/* Title and button */}
           <div className="flex justify-between items-center w-full">
             <div className="text-medium-blue-1 text-xl font-bold">
-              What is useEffect in React?
+              {queryDetails.title}
             </div>
             <div className="bg-medium-green-1 cursor-pointer text-sm p-2.5 text-white rounded-md">
               Set Status
@@ -41,33 +69,25 @@ const SpecificQuery = () => {
         {/* Status, assigned to and category */}
         <div className="flex gap-2 items-center">
           <div className="bg-gold-yellow text-xs p-1.5 text-white rounded-md capitalize">
-            frontend
+            {queryDetails.category}
           </div>
-          {!isResolved && <QueryStatusIndicator status="pending" />}
+          {!isResolved && <QueryStatusIndicator status={queryDetails.ticket_status} />}
           <div className="border-2 text-medium-blue-1 text-xs rounded-md border-medium-blue-1 py-1 px-2 w-fit">
-            Asked on 23/10/2021
+            Asked on {queryDetails.asked_on.seconds}
           </div>
           <div className="text-xs font-bold text-medium-grey">
-            Assigned to Dhilip
+            Assigned to {queryDetails.mentor_id}
           </div>
         </div>
         {/* Description */}
         <div className="text-sm text-medium-grey leading-loose text-justify">
-          Add few elements like the location of the company and no of visits in
-          the footer to make the website more informative and visually
-          appealing. Add few elements like the location of the company and no of
-          visits in the footer to make the website more informative and visually
-          appealing. Add few elements like the location of the company and no of
-          visits in the footer to make the website more informative and visually
-          appealing. Add few elements like the location of the company and no of
-          visits in the footer to make the website more informative and visually
-          appealing.
+          {queryDetails.description}
         </div>
       </div>
       {/* Discussion */}
       <TitleWithLine title="Discussion" className="mt-8 mb-4" />
-      <DiscussionBox discussion={[]} />
-    </div>
+      <DiscussionBox discussionData={queryDetails.updates} />
+    </div> : <div>Loading...</div>
   );
 };
 

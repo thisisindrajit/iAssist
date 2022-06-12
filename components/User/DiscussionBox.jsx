@@ -7,26 +7,17 @@ const DiscussionBox = ({ discussionData }) => {
   return (
     <div>
       <div className="text-sm flex flex-col gap-4 mb-16">
-        <ChatBox
-          discussion="Add few elements like the location of the company and no of visits in the footer to make the website more informative and xa appealing. Add few elements like the location of the company and no of visits in the footer to make the website more informative and visually appealing."
-          userName="You"
-          discussedOn="23/10/2021"
-          isUser
-        />
-        <ChatBox
-          discussion="Add few elements like the location of the company and no of visits in the footer to make the website more informative and xa appealing. Add few elements like the location of the company and no of visits in the footer to make the website more informative and visually appealing."
-          userName="Dhilip"
-          discussedOn="23/10/2021"
-        />
-        <ChatBox
-          discussion="Changed status from pending to in progress."
-          isUpdate
-        />
-        <ChatBox
-          discussion="Add few elements like the location of the company and no of visits in the footer to make the website more informative and xa appealing. Add few elements like the location of the company and no of visits in the footer to make the website more informative and visually appealing."
-          userName="Dhilip"
-          discussedOn="23/10/2021"
-        />
+        {discussionData.map((discussion) => {
+          return (
+            <ChatBox
+            discussion={discussion.update_message}
+            isUpdate={discussion.update_type === "status_update"}
+            discussedOn="23/10/2021"
+          />
+          )
+        })
+        }
+
       </div>
       {/* Send message textbox */}
       <div

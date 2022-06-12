@@ -13,6 +13,7 @@ const StudentHome = () => {
   const router = useRouter();
   const { authUser, loading } = useGoogleAuth();
   const [allQueryDetails, setAllQueryDetails] = useState(null);
+  const [allQueryCount, setAllQueryCount] = useState(null);
 
   useEffect(() => {
     if (!loading && !authUser) {
@@ -24,13 +25,18 @@ const StudentHome = () => {
     const getStatsDetails = async () => {
       if (authUser) {
         const token = await authUser.getIdToken();
+        let allQueryDetailsUrl, allQueryCountUrl;
+        if(authUser.userType === "student"){
+          allQueryDetailsUrl = "api/" + authUser.userType + "/" + authUser.uid + "/query/queryStatus/all";
+          allQueryCountUrl = "api/" + authUser.userType + "/" + authUser.uid + "/query/queryStatus/getCount";
+        }
+        else{
+          allQueryDetailsUrl = "api/" + authUser.userType + "/" + authUser.uid + "/query/ticketStatus/all";
+          allQueryCountUrl = "api/" + authUser.userType + "/" + authUser.uid + "/query/ticketStatus/getCount";
+        }
 
         fetch(
-          "api/" +
-            authUser.userType +
-            "/" +
-            authUser.uid +
-            "/query/queryStatus/getCount",
+          allQueryDetailsUrl,
           {
             method: "GET",
             headers: {
@@ -40,8 +46,23 @@ const StudentHome = () => {
         )
           .then((res) => res.json())
           .then((data) => {
+            console.log(data);
             setAllQueryDetails(data);
           });
+
+          fetch(
+            allQueryCountUrl,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              setAllQueryCount(data);
+            });
       }
     };
 
@@ -64,85 +85,40 @@ const StudentHome = () => {
         ☀️ Good day, <span className="font-bold">{authUser.name}</span>
       </div>
       {/* Stats Section */}
-      {allQueryDetails && <Stats userType="student" stats={allQueryDetails} />}
+      {allQueryDetails && <Stats userType="student" stats={allQueryCount} />}
       {/* Unresolved Queries */}
       <a id="unresolved"></a>
       <TitleWithLine title="Unresolved Queries" className="mt-12 mb-4" />
       <div className="grid grid-cols-2 gap-4">
-        <StudentQueryBox
-          title="What is useEffect in React?"
-          status="pending"
-          assignedTo="Dhilip"
-          askedOn="23/10/2021"
-          category="frontend"
-          href="/student/query/123"
-        />
-
-        <StudentQueryBox
-          title="What is useEffect in React?"
-          status="completed"
-          assignedTo="Dhilip"
-          askedOn="23/10/2021"
-          category="backend"
-          href="/student/query/123"
-        />
-        <StudentQueryBox
-          title="What is useEffect in React?"
-          status="in progress"
-          assignedTo="Dhilip"
-          askedOn="23/10/2021"
-          category="frontend"
-          href="/student/query/123"
-        />
-        <StudentQueryBox
-          title="What is useEffect in React?"
-          status="pending"
-          assignedTo="Dhilip"
-          askedOn="23/10/2021"
-          category="other"
-          href="/student/query/123"
-        />
+        {
+          allQueryDetails && allQueryDetails.unresolved.length > 0 ? allQueryDetails.unresolved.map((queryDetails) => {
+            return(<StudentQueryBox key={queryDetails.id}
+            title={queryDetails.title}
+            status={queryDetails.query_status}
+            assignedTo={queryDetails.mentor_id}
+            askedOn={"23/10/2021"}
+            category={queryDetails.category}
+            href={"/student/query/"+queryDetails.id}
+          />)
+          }) : <div>No queries</div>
+        }
       </div>
       {/* Resolved Queries */}
       <a id="resolved"></a>
       <TitleWithLine title="Resolved Queries" className="mt-12 mb-4" />
       <div className="grid grid-cols-2 gap-4">
-        <StudentQueryBox
-          title="What is useEffect in React?"
-          status="pending"
-          assignedTo="Dhilip"
-          askedOn="23/10/2021"
-          category="frontend"
-          href="/student/query/123"
-          isResolved
-        />
-        <StudentQueryBox
-          title="What is useEffect in React?"
-          status="completed"
-          assignedTo="Dhilip"
-          askedOn="23/10/2021"
-          category="backend"
-          href="/student/query/123"
-          isResolved
-        />
-        <StudentQueryBox
-          title="What is useEffect in React?"
-          status="in progress"
-          assignedTo="Dhilip"
-          askedOn="23/10/2021"
-          category="frontend"
-          href="/student/query/123"
-          isResolved
-        />
-        <StudentQueryBox
-          title="What is useEffect in React?"
-          status="pending"
-          assignedTo="Dhilip"
-          askedOn="23/10/2021"
-          category="other"
-          href="/student/query/123"
-          isResolved
-        />
+        {
+            allQueryDetails && allQueryDetails.unresolved.length > 0 ? allQueryDetails.resolved.map((queryDetails) => {
+            return(<StudentQueryBox key={queryDetails.id}
+            title={queryDetails.title}
+            status={queryDetails.query_status}
+            assignedTo={queryDetails.mentor_id}
+            askedOn={queryDetails.asked_on}
+            category={queryDetails.category}
+            href={"/student/query/"+queryDetails.id}
+          />)
+          }) : <div>No queries</div>
+        }
       </div>
     </div>
   ) : (
