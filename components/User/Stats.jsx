@@ -9,7 +9,9 @@ const Stats = ({ userType, stats }) => {
       </div>
       {/* Query count/points */}
       <div className="text-2xl text-dark-grey mt-1 font-bold">
-        {userType === "student" ? stats.queries : stats.points}
+        {userType === "student"
+          ? stats.unresolved + stats.resolved
+          : stats.points}
       </div>
       {/* Extra stats */}
       <div className="text-sm font-bold mt-6">

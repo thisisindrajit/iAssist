@@ -22,30 +22,44 @@ const StudentHome = () => {
   }, [authUser, loading]);
 
   const getStatsData = async () => {
-    console.log(authUser)
     const token = await authUser.getIdToken();
-    let data;
-    let countData;
-    if(authUser.userType === "student"){
-      countData = await getData(authUser.userType + "/" + authUser.uid + "/query/queryStatus/getCount", token);
-      data = await getData(authUser.userType + "/" + authUser.uid + "/query/queryStatus/all", token);
+
+    let data, countData;
+
+    if (authUser.userType === "student") {
+      countData = await getData(
+        authUser.userType + "/" + authUser.uid + "/query/queryStatus/getCount",
+        token
+      );
+      queryData = await getData(
+        authUser.userType + "/" + authUser.uid + "/query/queryStatus/all",
+        token
+      );
+    } else {
+      countData = await getData(
+        authUser.userType + "/" + authUser.uid + "/query/ticketStatus/getCount",
+        token
+      );
+      queryData = await getData(
+        authUser.userType + "/" + authUser.uid + "/query/ticketStatus/all",
+        token
+      );
     }
-    else{
-      countData = await getData(authUser.userType + "/" + authUser.uid + "/query/ticketStatus/getCount", token);
-      data = await getData(authUser.userType + "/" + authUser.uid + "/query/ticketStatus/all", token);
+
+    return { queryData, countData };
+  };
+
+  const { data, isLoading, isError } = useQuery(
+    ["stats-details", authUser?.uid],
+    getStatsData,
+    {
+      enabled: authUser ? true : false,
     }
-    
-    return { data, countData }
+  );
+
+  if (!isLoading) {
+    console.log(data);
   }
-
-  const { data, isLoading, isError } = useQuery(["stats-details"], getStatsData, {
-    enabled: authUser ? true : false
-  })
-
-  if(!isLoading){
-    console.log(data)
-  }
-
 
   return !loading && authUser ? (
     <div>
@@ -63,7 +77,7 @@ const StudentHome = () => {
         ☀️ Good day, <span className="font-bold">{authUser.name}</span>
       </div>
       {/* Stats Section */}
-      <Stats userType="student" stats={sampleStats} />
+      <Stats userType="student" stats={data.countData} />
       {/* Unresolved Queries */}
       <a id="unresolved"></a>
       <TitleWithLine title="Unresolved Queries" className="mt-12 mb-4" />
