@@ -2,11 +2,11 @@ const ChatBox = ({ discussion, discussedOn, userName, isUser, isUpdate }) => {
   return !isUpdate ? (
     <div
       style={{ borderWidth: "1px" }}
-      className={`flex flex-col gap-3 py-4 px-6 query-box-shadow border-gray-200 rounded-lg leading-loose w-4/5 text-justify ${
-        isUser && "m-auto mr-0"
+      className={`flex flex-col gap-2 py-3 px-6 query-box-shadow border-gray-200 rounded-lg leading-loose w-3/5 text-justify ${
+        isUser && "m-auto mr-0 bg-stats-bg"
       }`}
     >
-      <div>{discussion}</div>
+      <div className="font-semibold">{discussion}</div>
       {discussedOn ? (
         <div className="text-gold-yellow">
           {userName} on {discussedOn}

@@ -14,15 +14,23 @@ const StudentQueryBox = ({
   href,
 }) => {
   const { authUser } = useGoogleAuth();
-  const [mentorName, setMentorName] = useState(null);
+  const [name, setName] = useState(null);
 
   useEffect(() => {
-    getUserName(assignedTo);
-  }, [assignedTo]);
+    if (authUser && authUser.userType === "student") {
+      getUserName(assignedTo);
+    }
+
+    if (authUser && authUser.userType === "mentor") {
+      getUserName(askedBy);
+    }
+  }, [assignedTo, askedBy]);
 
   const getUserName = async (uid) => {
     if (authUser) {
-      let url = `/api/mentor/${uid}/getUser`;
+      let url = `/api/${
+        authUser.userType === "student" ? "mentor" : "student"
+      }/${uid}/getUser`;
       let token = await authUser.getIdToken();
 
       const name = await fetch(url, {
@@ -34,7 +42,7 @@ const StudentQueryBox = ({
 
       const nameJSON = await name.json();
 
-      setMentorName(nameJSON.name);
+      setName(nameJSON.name);
     }
   };
 
@@ -53,12 +61,12 @@ const StudentQueryBox = ({
           {!isResolved && status && <QueryStatusIndicator status={status} />}
           {assignedTo && (
             <div className="text-xs font-bold text-medium-grey">
-              {mentorName ? `Assigned to ${mentorName}` : "..."}
+              {name ? `Assigned to ${name}` : "..."}
             </div>
           )}
           {askedBy && (
             <div className="text-xs font-bold text-medium-grey">
-              Asked by {askedBy}
+              {name ? `Asked by ${name}` : "..."}
             </div>
           )}
         </div>

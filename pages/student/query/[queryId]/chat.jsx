@@ -15,7 +15,7 @@ const QueryChat = () => {
   const { queryId } = router.query;
 
   const closeModal = async () => {
-    if (authUser) {
+    if (authUser && authUser.userType === "student") {
       const token = await authUser.getIdToken();
 
       const details = {
@@ -29,6 +29,9 @@ const QueryChat = () => {
       setOpen(false);
       router.push(`/${authUser.userType}`);
     }
+
+    setOpen(false);
+    router.push(`/${authUser.userType}`);
   };
 
   return (
@@ -50,7 +53,9 @@ const QueryChat = () => {
           </div>
         </div>
         {/* Description */}
-        <div className="bg-gray-100 rounded-md p-4 w-full text-sm leading-loose text-medium-grey">Description goes here...</div>
+        <div className="bg-gray-100 rounded-md p-4 w-full text-sm leading-loose text-medium-grey mt-4 mb-6">
+          Description goes here...
+        </div>
         {/* Discussion */}
         {/* <DiscussionBoxForQuery discussion={[]} /> */}
         <AblyChatComponent channelName={queryId?.toString()} />

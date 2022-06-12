@@ -2,12 +2,11 @@ import Head from "next/head";
 import BackButton from "../../../../components/BackButton";
 import TitleWithLine from "../../../../components/TitleWithLine";
 import QueryStatusIndicator from "../../../../components/User/QueryStatusIndicator";
-import studentLayout from "../../../../layouts/studentLayout";
 import DiscussionBox from "../../../../components/User/DiscussionBox";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useGoogleAuth } from "../../../../context/GoogleAuthContext";
-import convertToPrettyDateFormat from "/utilities/prettyDateFormat"
+import mentorLayout from "../../../../layouts/mentorLayout";
 
 const SpecificQuery = () => {
   const router = useRouter();
@@ -16,17 +15,17 @@ const SpecificQuery = () => {
   const { authUser, loading } = useGoogleAuth();
   const [queryDetails, setQueryDetails] = useState(null);
 
-  const [mentorName, setMentorName] = useState(null);
+  const [studentName, setStudentName] = useState(null);
 
   useEffect(() => {
     if (queryDetails) {
-      getUserName(queryDetails.mentor_id);
+      getUserName(queryDetails.student_id);
     }
   }, [queryDetails]);
 
   const getUserName = async (uid) => {
     if (authUser) {
-      let url = `/api/mentor/${uid}/getUser`;
+      let url = `/api/student/${uid}/getUser`;
       let token = await authUser.getIdToken();
 
       const name = await fetch(url, {
@@ -38,17 +37,17 @@ const SpecificQuery = () => {
 
       const nameJSON = await name.json();
 
-      setMentorName(nameJSON.name);
+      setStudentName(nameJSON.name);
     }
   };
 
   useEffect(() => {
     if (!loading && !authUser) {
-      router.push(`/mentor`);
+      router.push(`/`);
     }
 
-    if (authUser && authUser.userType === "mentor") {
-      router.push(`/`);
+    if (authUser && authUser.userType === "student") {
+      router.push(`/student`);
     }
   }, [authUser, loading]);
 
@@ -88,8 +87,8 @@ const SpecificQuery = () => {
             <div className="text-medium-blue-1 text-xl font-bold">
               {queryDetails.title}
             </div>
-            <div className="bg-medium-green-1 cursor-pointer text-sm p-2.5 text-white rounded-md">
-              Set Status
+            <div className="bg-medium-purple-1 cursor-pointer text-sm p-2.5 text-white rounded-md">
+              Transfer Mentor
             </div>
           </div>
         </div>
@@ -102,10 +101,10 @@ const SpecificQuery = () => {
             <QueryStatusIndicator status={queryDetails.ticket_status} />
           )}
           <div className="border-2 text-medium-blue-1 text-xs rounded-md border-medium-blue-1 py-1 px-2 w-fit">
-            Asked on {convertToPrettyDateFormat(queryDetails.asked_on.seconds)}
+            Asked on {queryDetails.asked_on.seconds}
           </div>
           <div className="text-xs font-bold text-medium-grey">
-            {mentorName ? `Assigned to ${mentorName}` : "..."}
+            {studentName ? `Asked by ${studentName}` : "..."}
           </div>
         </div>
         {/* Description */}
@@ -124,4 +123,4 @@ const SpecificQuery = () => {
 
 export default SpecificQuery;
 
-SpecificQuery.Layout = studentLayout;
+SpecificQuery.Layout = mentorLayout;
