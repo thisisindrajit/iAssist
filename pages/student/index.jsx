@@ -20,6 +20,10 @@ const StudentHome = () => {
     if (!loading && !authUser) {
       router.push(`/`);
     }
+
+    if (authUser && authUser.userType === "mentor") {
+      router.push(`/mentor`);
+    }
   }, [authUser, loading]);
 
   useEffect(() => {
