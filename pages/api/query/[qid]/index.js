@@ -1,12 +1,17 @@
 import { withAuth } from "../../../../utilities/withAuth";
 import { firebase } from "/firebase/firebaseConfig";
+import { getUpdates } from "./updates/getUpdates";
 
 export const getQuery = async (qid) => {
     const snapshot = await firebase.firestore()
                         .collection("query")
                         .doc(qid).get();
+    const updatesDetails = await getUpdates(qid);
     if(snapshot.exists)
-        return snapshot.data();
+        return {
+            ...snapshot.data(),
+            "updates" : updatesDetails
+        }
     else
         return null;
 };
