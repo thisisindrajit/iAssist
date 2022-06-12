@@ -3,19 +3,34 @@ import studentLayout from "../../../../layouts/studentLayout";
 import Modal from "react-modal";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import DiscussionBoxForQuery from "../../../../components/User/DiscussionBoxForQuery";
 import AblyChatComponent from "../../../../components/Ably/AblyChatComponent";
+import postData from "../../../../utilities/api/postData";
+import { useGoogleAuth } from "../../../../context/GoogleAuthContext";
 
 const QueryChat = () => {
   const router = useRouter();
+  const { authUser } = useGoogleAuth();
 
   const [open, setOpen] = useState(true);
   const { queryId } = router.query;
 
-  const closeModal = () => {
-    setOpen(false);
-    router.push("/student");
+  const closeModal = async () => {
+    if (authUser) {
+      const token = await authUser.getIdToken();
+
+      const details = {
+        mentor_id: "MglWxeKSjZaNLmUsP1gkpkW89sA2",
+        ticket_status: "pending",
+      };
+
+      // assign random mentor
+      await postData(`/api/query/${queryId}/updateQueryField`, token, details);
+
+      setOpen(false);
+      router.push(`/${authUser.userType}`);
+    }
   };
+
   return (
     <div>
       <Head>

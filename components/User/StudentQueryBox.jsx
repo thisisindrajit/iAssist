@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { useGoogleAuth } from "../../context/GoogleAuthContext";
 import Link from "../Link";
 import QueryStatusIndicator from "./QueryStatusIndicator";
 
@@ -9,8 +11,33 @@ const StudentQueryBox = ({
   askedBy,
   category,
   isResolved,
-  href
+  href,
 }) => {
+  const { authUser } = useGoogleAuth();
+  const [mentorName, setMentorName] = useState(null);
+
+  useEffect(() => {
+    getUserName(assignedTo);
+  }, [assignedTo]);
+
+  const getUserName = async (uid) => {
+    if (authUser) {
+      let url = `/api/mentor/${uid}/getUser`;
+      let token = await authUser.getIdToken();
+
+      const name = await fetch(url, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const nameJSON = await name.json();
+
+      setMentorName(nameJSON.name);
+    }
+  };
+
   return (
     <Link href={href}>
       <div
@@ -24,12 +51,16 @@ const StudentQueryBox = ({
         {/* status and assigned to / asked by */}
         <div className="flex gap-2 items-center">
           {!isResolved && status && <QueryStatusIndicator status={status} />}
-          {assignedTo && <div className="text-xs font-bold text-medium-grey">
-            Assigned to {assignedTo}
-          </div>}
-          {askedBy && <div className="text-xs font-bold text-medium-grey">
-            Asked by {askedBy}
-          </div>}
+          {assignedTo && (
+            <div className="text-xs font-bold text-medium-grey">
+              {mentorName ? `Assigned to ${mentorName}` : "..."}
+            </div>
+          )}
+          {askedBy && (
+            <div className="text-xs font-bold text-medium-grey">
+              Asked by {askedBy}
+            </div>
+          )}
         </div>
         {/* Asked on and category */}
         <div className="flex gap-2 items-center">

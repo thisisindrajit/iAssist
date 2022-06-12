@@ -12,7 +12,7 @@ module.exports = {
         "dark-grey": "#5A6474",
         "medium-blue-1": "#6989FE",
         "gold-yellow": "#FBB034",
-        "medium-purple-1": "#5552D9"
+        "medium-purple-1": "#5552D9",
       },
       borderColor: {
         "gold-yellow": "#FBB034",
@@ -26,8 +26,8 @@ module.exports = {
         "medium-blue-1": "#6989FE",
         "stats-bg": "#F2F5FF",
         "medium-green-1": "#0C977F",
-        "medium-purple-1": "#5552D9"
-
+        "medium-purple-1": "#5552D9",
+        "medium-purple-2": "#ADACE7",
       },
     },
   },

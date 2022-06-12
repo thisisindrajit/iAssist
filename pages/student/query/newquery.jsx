@@ -36,13 +36,14 @@ const NewQuery = () => {
         category: category,
         query_status: "unresolved",
         student_id: authUser.uid,
+        ticket_status: "not_created",
       };
 
       const token = await authUser.getIdToken();
 
       // set query details in backend here
       const newQueryId = await postData(
-        "/query/createQuery",
+        "/api/query/createQuery",
         token,
         queryDetails
       );

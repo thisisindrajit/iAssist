@@ -56,8 +56,13 @@ const MentorHome = () => {
         <title>{authUser.name} - Home</title>
       </Head>
       {/* Welcome section */}
-      <div className="text-2xl text-dark-grey">
-        ☀️ Good day, <span className="font-bold">{authUser.name}</span>
+      <div className="flex justify-between items-center">
+        <div className="text-2xl text-dark-grey">
+          ☀️ Good day, <span className="font-bold">{authUser.name}</span>
+        </div>
+        <div className="border-2 border-medium-blue-1 p-2 rounded-md text-medium-blue-1 text-sm w-fit font-bold capitalize">
+          {authUser.userType}
+        </div>
       </div>
       {/* Stats Section */}
       {allQueryDetails && <Stats userType="mentor" stats={allQueryDetails} />}

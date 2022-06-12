@@ -15,6 +15,31 @@ const SpecificQuery = () => {
   const { authUser, loading } = useGoogleAuth();
   const [queryDetails, setQueryDetails] = useState(null);
 
+  const [mentorName, setMentorName] = useState(null);
+
+  useEffect(() => {
+    if (queryDetails) {
+      getUserName(queryDetails.mentor_id);
+    }
+  }, [queryDetails]);
+
+  const getUserName = async (uid) => {
+    if (authUser) {
+      let url = `/api/mentor/${uid}/getUser`;
+      let token = await authUser.getIdToken();
+
+      const name = await fetch(url, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const nameJSON = await name.json();
+
+      setMentorName(nameJSON.name);
+    }
+  };
 
   useEffect(() => {
     if (!loading && !authUser) {
@@ -26,17 +51,14 @@ const SpecificQuery = () => {
     const getQueryDetails = async () => {
       if (authUser) {
         const token = await authUser.getIdToken();
-        let queryDetailsUrl = "/api/query/"+queryId;
+        let queryDetailsUrl = "/api/query/" + queryId;
 
-        fetch(
-          queryDetailsUrl,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        )
+        fetch(queryDetailsUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
           .then((res) => res.json())
           .then((data) => {
             console.log(data);
@@ -48,8 +70,8 @@ const SpecificQuery = () => {
     getQueryDetails();
   }, [authUser]);
 
-  return (
-    queryDetails ? <div>
+  return queryDetails ? (
+    <div>
       <Head>
         <title>{queryDetails.title}</title>
       </Head>
@@ -71,12 +93,14 @@ const SpecificQuery = () => {
           <div className="bg-gold-yellow text-xs p-1.5 text-white rounded-md capitalize">
             {queryDetails.category}
           </div>
-          {!isResolved && <QueryStatusIndicator status={queryDetails.ticket_status} />}
+          {!isResolved && (
+            <QueryStatusIndicator status={queryDetails.ticket_status} />
+          )}
           <div className="border-2 text-medium-blue-1 text-xs rounded-md border-medium-blue-1 py-1 px-2 w-fit">
             Asked on {queryDetails.asked_on.seconds}
           </div>
           <div className="text-xs font-bold text-medium-grey">
-            Assigned to {queryDetails.mentor_id}
+            {mentorName ? `Assigned to ${mentorName}` : "..."}
           </div>
         </div>
         {/* Description */}
@@ -87,7 +111,9 @@ const SpecificQuery = () => {
       {/* Discussion */}
       <TitleWithLine title="Discussion" className="mt-8 mb-4" />
       <DiscussionBox discussionData={queryDetails.updates} />
-    </div> : <div>Loading...</div>
+    </div>
+  ) : (
+    <div>Loading...</div>
   );
 };
 

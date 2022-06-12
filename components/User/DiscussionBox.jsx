@@ -7,17 +7,19 @@ const DiscussionBox = ({ discussionData }) => {
   return (
     <div>
       <div className="text-sm flex flex-col gap-4 mb-16">
-        {discussionData.map((discussion) => {
-          return (
-            <ChatBox
-            discussion={discussion.update_message}
-            isUpdate={discussion.update_type === "status_update"}
-            discussedOn="23/10/2021"
-          />
-          )
-        })
-        }
-
+        {discussionData.length > 0 ? (
+          discussionData.map((discussion) => {
+            return (
+              <ChatBox
+                discussion={discussion.update_message}
+                isUpdate={discussion.update_type === "status_update"}
+                discussedOn="23/10/2021"
+              />
+            );
+          })
+        ) : (
+          <div className="m-auto my-4 font-bold">No discussions yet!</div>
+        )}
       </div>
       {/* Send message textbox */}
       <div

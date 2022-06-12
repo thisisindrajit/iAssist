@@ -93,6 +93,7 @@ export const useGoogleFirebaseAuth = () => {
         });
 
         currentUserDetails.specialization = specialization;
+        currentUserDetails.reputation_points = 10;
       }
 
       // add user details to database
