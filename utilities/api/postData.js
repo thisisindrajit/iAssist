@@ -1,7 +1,7 @@
-import { baseURL } from "../baseUrlConfig";
+
 
 const postData = async (url, token, userData) => {
-  const data = await fetch(baseURL + url, {
+  const data = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

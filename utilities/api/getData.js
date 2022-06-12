@@ -1,7 +1,7 @@
-import { baseURL } from "../baseUrlConfig";
+
 
 const getData = async (url, token) => {
-    const data = await fetch(baseURL + url, {
+    const data = await fetch(url, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
