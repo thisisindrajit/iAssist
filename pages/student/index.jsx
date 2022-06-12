@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useGoogleAuth } from "../../context/GoogleAuthContext";
 import Image from "next/image";
+import Link from "../../components/Link";
 
 const StudentHome = () => {
   const router = useRouter();
@@ -31,10 +32,11 @@ const StudentHome = () => {
         <title>{authUser.name} - Home</title>
       </Head>
       {/* New query button */}
-      <div className="rounded-full fixed p-6 bottom-6 right-6 cursor-pointer bg-medium-purple-1 flex items-center justify-center h-10 w-10">
-        <Image src="/svg/plus.svg"layout="fill"
-            objectFit="contain" />
-      </div>
+      <Link href="/student/query/newquery">
+        <div className="rounded-full fixed p-6 bottom-6 right-6 cursor-pointer bg-medium-purple-1 flex items-center justify-center h-10 w-10 z-10 query-box-shadow">
+          <Image src="/svg/plus.svg" layout="fill" objectFit="contain" />
+        </div>
+      </Link>
       {/* Welcome section */}
       <div className="text-2xl text-dark-grey">
         ☀️ Good day, <span className="font-bold">{authUser.name}</span>

@@ -64,10 +64,11 @@ export const useGoogleFirebaseAuth = () => {
 
       if (selectedUserType === "student") {
         const { value: designation } = await Swal.fire({
-          title: "Enter your designation",
+          title: "Your designation",
           input: "text",
-          inputLabel: "Your designation",
+          inputLabel: "Enter your designation (for students only)",
           showCancelButton: false,
+          customClass: "swal-custom",
           inputValidator: (value) => {
             if (!value) {
               return "Enter designation!";
@@ -78,10 +79,12 @@ export const useGoogleFirebaseAuth = () => {
         currentUserDetails.designation = designation;
       } else {
         const { value: specialization } = await Swal.fire({
-          title: "Enter your specialization",
+          title: "Your Specialization",
           input: "text",
-          inputLabel: "Your specialization",
+          inputLabel:
+            "Enter the field that you are specialized in (for mentors only)",
           showCancelButton: false,
+          customClass: "swal-custom",
           inputValidator: (value) => {
             if (!value) {
               return "Enter specialization!";

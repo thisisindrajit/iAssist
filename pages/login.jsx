@@ -37,7 +37,7 @@ const Login = () => {
             Are you a student or a mentor?
           </span>
           {/* Radio buttons */}
-          <div class="flex flex-col">
+          <div className="flex flex-col">
             <div className="flex justify-center gap-6 mb-2">
               <div className="form-check form-check-inline">
                 <input

@@ -49,3 +49,13 @@ body {
 .update:after {
   margin-left: 10px;
 }
+
+/* sweet alert styling */
+.swal-custom {
+  font-family: "DM Sans", sans-serif !important;
+}
+
+.swal-custom button {
+  margin-top: 0px;
+  background-color: #fbb034 !important;
+}
