@@ -1,4 +1,5 @@
 const Stats = ({ userType, stats }) => {
+  console.log(stats);
   // Show different stats based on different type of user
   return (
     <div className="bg-stats-bg p-4 mt-6 rounded-md">
@@ -28,11 +29,11 @@ const Stats = ({ userType, stats }) => {
         ) : (
           <div className="flex gap-2">
             <span className="text-purple-500">
-              {stats.inProgressQueries} in progress queries
+              {stats["in-progress"]} in progress queries
             </span>{" "}
             |{" "}
             <span className="text-red-400">
-              {stats.pendingQueries} pending queries
+              {stats.pending} pending queries
             </span>
           </div>
         )}

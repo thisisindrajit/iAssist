@@ -6,7 +6,7 @@ import { useChannel } from "./AblyReactEffect";
 const AblyChatComponent = ({ channelName }) => {
   let inputBox = null;
   let messageEnd = null;
-  const authUser = useGoogleAuth();
+  const { authUser } = useGoogleAuth();
 
   const [messageText, setMessageText] = useState("");
   const [receivedMessages, setMessages] = useState([]);
@@ -52,7 +52,7 @@ const AblyChatComponent = ({ channelName }) => {
         key={index}
         discussion={message.data}
         userName={author}
-        isUser={author.toString().toLowerCase() === "me"}
+        isUser={author === "Me"}
       />
     );
   });
