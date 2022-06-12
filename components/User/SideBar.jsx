@@ -12,7 +12,11 @@ const SideBar = ({ userType }) => {
   const [userName, setUserName] = useState(null); //
 
   useEffect(() => {
-    setUserName(JSON.parse(localStorage.getItem("user"))["name"].split(" ")[0]);
+    if (localStorage.getItem("user") !== "") {
+      setUserName(
+        JSON.parse(localStorage.getItem("user"))["name"].split(" ")[0]
+      );
+    }
   }, []);
   // Show different sidebars based on different type of user
   return (
