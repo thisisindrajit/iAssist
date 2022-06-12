@@ -4,6 +4,7 @@ import Modal from "react-modal";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import DiscussionBoxForQuery from "../../../../components/User/DiscussionBoxForQuery";
+import AblyChatComponent from "../../../../components/Ably/AblyChatComponent";
 
 const QueryChat = () => {
   const router = useRouter();
@@ -34,7 +35,8 @@ const QueryChat = () => {
           </div>
         </div>
         {/* Discussion */}
-        <DiscussionBoxForQuery discussion={[]} />
+        {/* <DiscussionBoxForQuery discussion={[]} /> */}
+        <AblyChatComponent channelName={queryId?.toString()} />
       </Modal>
     </div>
   );

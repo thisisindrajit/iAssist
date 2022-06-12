@@ -22,28 +22,36 @@ const StudentHome = () => {
   }, [authUser, loading]);
 
   const getStatsData = async () => {
-    const token = await authUser.getIdToken();
+    if (authUser) {
+      const token = await authUser.getIdToken();
 
-    let data, countData;
+      let queryData, countData;
 
-    if (authUser.userType === "student") {
-      countData = await getData(
-        authUser.userType + "/" + authUser.uid + "/query/queryStatus/getCount",
-        token
-      );
-      queryData = await getData(
-        authUser.userType + "/" + authUser.uid + "/query/queryStatus/all",
-        token
-      );
-    } else {
-      countData = await getData(
-        authUser.userType + "/" + authUser.uid + "/query/ticketStatus/getCount",
-        token
-      );
-      queryData = await getData(
-        authUser.userType + "/" + authUser.uid + "/query/ticketStatus/all",
-        token
-      );
+      if (authUser.userType === "student") {
+        countData = await getData(
+          authUser.userType +
+            "/" +
+            authUser.uid +
+            "/query/queryStatus/getCount",
+          token
+        );
+        queryData = await getData(
+          authUser.userType + "/" + authUser.uid + "/query/queryStatus/all",
+          token
+        );
+      } else {
+        countData = await getData(
+          authUser.userType +
+            "/" +
+            authUser.uid +
+            "/query/ticketStatus/getCount",
+          token
+        );
+        queryData = await getData(
+          authUser.userType + "/" + authUser.uid + "/query/ticketStatus/all",
+          token
+        );
+      }
     }
 
     return { queryData, countData };
