@@ -115,7 +115,7 @@ const SpecificQuery = () => {
       </div>
       {/* Discussion */}
       <TitleWithLine title="Discussion" className="mt-8 mb-4" />
-      <DiscussionBox discussionData={queryDetails.updates} />
+      <DiscussionBox queryId={queryId} discussionData={queryDetails.updates} />
     </div>
   ) : (
     <div>Loading...</div>

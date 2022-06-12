@@ -17,6 +17,7 @@ async function handler(req, res) {
     try{
         const {qid} = req.query;
         const updateDetails = req.body;
+        updateDetails.update_time = firebase.firestore.Timestamp.now();
         await createUpdate(qid, updateDetails)
         return res.status(200).json({ message: "Successfully created update" });
     }
