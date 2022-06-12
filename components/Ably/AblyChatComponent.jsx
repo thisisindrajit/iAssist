@@ -44,7 +44,6 @@ const AblyChatComponent = ({ channelName }) => {
   };
 
   const messages = receivedMessages.map((message, index) => {
-
     const author =
       message.connectionId === ably.connection.id ? "Me" : message.name;
     return (
@@ -65,7 +64,11 @@ const AblyChatComponent = ({ channelName }) => {
   return (
     <div>
       <div className="text-sm flex flex-col gap-4">
-        {messages.length > 0 ? messages : <div className="m-auto my-4 font-bold">No messages yet!</div>}
+        {messages.length > 0 ? (
+          messages
+        ) : (
+          <div className="m-auto mt-8 mb-4 font-bold">No messages yet!</div>
+        )}
         <div
           ref={(element) => {
             messageEnd = element;

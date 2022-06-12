@@ -38,7 +38,7 @@ const QueryChat = () => {
       </Head>
       <Modal isOpen={open} onRequestClose={closeModal}>
         {/* query and close button */}
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-start mb-6">
           <div className="text-medium-blue-1 text-lg font-bold">
             Query title goes here
           </div>
@@ -49,6 +49,8 @@ const QueryChat = () => {
             Close
           </div>
         </div>
+        {/* Description */}
+        <div className="bg-gray-100 rounded-md p-4 w-full text-sm leading-loose text-medium-grey">Description goes here...</div>
         {/* Discussion */}
         {/* <DiscussionBoxForQuery discussion={[]} /> */}
         <AblyChatComponent channelName={queryId?.toString()} />
