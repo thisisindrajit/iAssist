@@ -6,6 +6,7 @@ import Stats from "../../components/User/Stats";
 import StudentQueryBox from "../../components/User/StudentQueryBox";
 import { useGoogleAuth } from "../../context/GoogleAuthContext";
 import mentorLayout from "../../layouts/mentorLayout";
+import convertToPrettyDateFormat from "/utilities/prettyDateFormat"
 
 const MentorHome = () => {
   const router = useRouter();
@@ -141,7 +142,7 @@ const MentorHome = () => {
                   title={activeChat.title}
                   status={activeChat.query_status}
                   askedBy={activeChat.student_id}
-                  askedOn={"23/10/2021"}
+                  askedOn={convertToPrettyDateFormat(activeChat.asked_on.seconds)}
                   category={activeChat.category}
                   href={"/student/query/" + activeChat.id + "/chat"}
                 />
@@ -168,7 +169,7 @@ const MentorHome = () => {
                   title={queryDetails.title}
                   status={queryDetails.ticket_status}
                   askedBy={queryDetails.student_id}
-                  askedOn={queryDetails.asked_on.seconds}
+                  askedOn={convertToPrettyDateFormat(queryDetails.asked_on.seconds)}
                   category={queryDetails.category}
                   href={"/mentor/query/" + queryDetails.id}
                 />
@@ -194,7 +195,7 @@ const MentorHome = () => {
                   title={queryDetails.title}
                   status={queryDetails.ticket_status}
                   askedBy={queryDetails.student_id}
-                  askedOn={queryDetails.asked_on.seconds}
+                  askedOn={convertToPrettyDateFormat(queryDetails.asked_on.seconds)}
                   category={queryDetails.category}
                   href={"/mentor/query/" + queryDetails.id}
                 />
@@ -220,7 +221,7 @@ const MentorHome = () => {
                   title={queryDetails.title}
                   status={queryDetails.ticket_status}
                   askedBy={queryDetails.student_id}
-                  askedOn={queryDetails.asked_on.seconds}
+                  askedOn={convertToPrettyDateFormat(queryDetails.asked_on.seconds)}
                   category={queryDetails.category}
                   href={"/mentor/query/" + queryDetails.id}
                 />

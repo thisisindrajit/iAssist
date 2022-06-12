@@ -1,4 +1,5 @@
 import ChatBox from "./ChatBox";
+import convertToPrettyDateFormat from "/utilities/prettyDateFormat"
 
 const { useState } = require("react");
 
@@ -13,7 +14,7 @@ const DiscussionBox = ({ discussionData }) => {
               <ChatBox
                 discussion={discussion.update_message}
                 isUpdate={discussion.update_type === "status_update"}
-                discussedOn="23/10/2021"
+                discussedOn={convertToPrettyDateFormat(discussion.update_time.seconds)}
               />
             );
           })
