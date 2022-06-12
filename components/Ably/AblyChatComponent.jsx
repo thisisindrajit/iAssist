@@ -46,7 +46,7 @@ const AblyChatComponent = ({ channelName }) => {
   const messages = receivedMessages.map((message, index) => {
     const author = message.connectionId === ably.connection.id ? "me" : "other";
     return (
-      <span key={index} data-author={author}>
+      <span key={index} data-author={author} data-author-id={authUser.uid}>
         {message.data}
       </span>
     );
@@ -65,7 +65,6 @@ const AblyChatComponent = ({ channelName }) => {
             messageEnd = element;
           }}
         ></div>{" "}
-        // empty element to control scroll to bottom
       </div>
       <form onSubmit={handleFormSubmission}>
         <textarea
