@@ -14,6 +14,7 @@ import Link from "../../components/Link";
 const StudentHome = () => {
   const router = useRouter();
   const { authUser, loading } = useGoogleAuth();
+  const [allQueryDetails, setAllQueryDetails] = useState(null);
 
   useEffect(() => {
     if (!loading && !authUser) {
@@ -21,53 +22,33 @@ const StudentHome = () => {
     }
   }, [authUser, loading]);
 
-  const getStatsData = async () => {
-    if (authUser) {
-      const token = await authUser.getIdToken();
+  useEffect(() => {
+    const getStatsDetails = async () => {
+      if (authUser) {
+        const token = await authUser.getIdToken();
 
-      let queryData, countData;
-
-      if (authUser.userType === "student") {
-        countData = await getData(
-          authUser.userType +
+        fetch(
+          "api/" +
+            authUser.userType +
             "/" +
             authUser.uid +
-            "/query/queryStatus/getCount",
-          token
-        );
-        queryData = await getData(
-          authUser.userType + "/" + authUser.uid + "/query/queryStatus/all",
-          token
-        );
-      } else {
-        countData = await getData(
-          authUser.userType +
-            "/" +
-            authUser.uid +
-            "/query/ticketStatus/getCount",
-          token
-        );
-        queryData = await getData(
-          authUser.userType + "/" + authUser.uid + "/query/ticketStatus/all",
-          token
-        );
+            "/query/queryStatus/all",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            setAllQueryDetails(data);
+          });
       }
-    }
+    };
 
-    return { queryData, countData };
-  };
-
-  const { data, isLoading, isError } = useQuery(
-    ["stats-details", authUser?.uid],
-    getStatsData,
-    {
-      enabled: authUser ? true : false,
-    }
-  );
-
-  if (!isLoading) {
-    console.log(data);
-  }
+    getStatsDetails();
+  }, [authUser]);
 
   return !loading && authUser ? (
     <div>
@@ -85,7 +66,7 @@ const StudentHome = () => {
         ☀️ Good day, <span className="font-bold">{authUser.name}</span>
       </div>
       {/* Stats Section */}
-      <Stats userType="student" stats={data.countData} />
+      {allQueryDetails && <Stats userType="student" stats={allQueryDetails} />}
       {/* Unresolved Queries */}
       <a id="unresolved"></a>
       <TitleWithLine title="Unresolved Queries" className="mt-12 mb-4" />
