@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import studentLayout from "../../../../layouts/studentLayout";
 import Modal from "react-modal";
 import Head from "next/head";
@@ -12,6 +12,7 @@ const QueryChat = () => {
   const { authUser } = useGoogleAuth();
 
   const [open, setOpen] = useState(true);
+  const [queryDetails, setQueryDetails] = useState(null);
   const { queryId } = router.query;
 
   const closeModal = async () => {
@@ -34,6 +35,29 @@ const QueryChat = () => {
     router.push(`/${authUser.userType}`);
   };
 
+  useEffect(() => {
+    const getQueryDetails = async () => {
+      if (authUser) {
+        const token = await authUser.getIdToken();
+        let queryDetailsUrl = "/api/query/" + queryId;
+
+        fetch(queryDetailsUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            setQueryDetails(data);
+          });
+      }
+    };
+
+    getQueryDetails();
+  }, [authUser]);
+
   return (
     <div>
       <Head>
@@ -43,7 +67,7 @@ const QueryChat = () => {
         {/* query and close button */}
         <div className="flex justify-between items-start mb-6">
           <div className="text-medium-blue-1 text-lg font-bold">
-            Query title goes here
+            {queryDetails ? queryDetails.title : "Loading Title..."} 
           </div>
           <div
             className="bg-red-500 text-sm p-2 text-white rounded-md cursor-pointer"
@@ -54,7 +78,7 @@ const QueryChat = () => {
         </div>
         {/* Description */}
         <div className="bg-gray-100 rounded-md p-4 w-full text-sm leading-loose text-medium-grey mt-4 mb-6">
-          Description goes here...
+          {queryDetails ? queryDetails.description : "Loading Description..."} 
         </div>
         {/* Discussion */}
         {/* <DiscussionBoxForQuery discussion={[]} /> */}

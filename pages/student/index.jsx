@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useGoogleAuth } from "../../context/GoogleAuthContext";
 import Image from "next/image";
 import Link from "../../components/Link";
+import convertToPrettyDateFormat from "/utilities/prettyDateFormat"
 
 const StudentHome = () => {
   const router = useRouter();
@@ -131,7 +132,7 @@ const StudentHome = () => {
                   title={queryDetails.title}
                   status={queryDetails.query_status}
                   assignedTo={queryDetails.mentor_id}
-                  askedOn={"23/10/2021"}
+                  askedOn={convertToPrettyDateFormat(queryDetails.asked_on.seconds)}
                   category={queryDetails.category}
                   href={"/student/query/" + queryDetails.id}
                 />
@@ -157,7 +158,7 @@ const StudentHome = () => {
                   title={queryDetails.title}
                   status={queryDetails.query_status}
                   assignedTo={queryDetails.mentor_id}
-                  askedOn={queryDetails.asked_on}
+                  askedOn={convertToPrettyDateFormat(queryDetails.asked_on.seconds)}
                   category={queryDetails.category}
                   href={"/student/query/" + queryDetails.id}
                 />

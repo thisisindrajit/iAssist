@@ -1,3 +1,5 @@
+import convertToPrettyDateFormat from "../../utilities/prettyDateFormat";
+
 const ChatBox = ({ discussion, discussedOn, userName, isUser, isUpdate }) => {
   return !isUpdate ? (
     <div
@@ -12,7 +14,7 @@ const ChatBox = ({ discussion, discussedOn, userName, isUser, isUpdate }) => {
           {userName} on {discussedOn}
         </div>
       ) : (
-        <div className="text-gold-yellow">{userName}</div>
+        <div className="text-gold-yellow">{userName} - {convertToPrettyDateFormat(new Date().getTime()/1000)}</div>
       )}
     </div>
   ) : (

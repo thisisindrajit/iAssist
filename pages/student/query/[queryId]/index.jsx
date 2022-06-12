@@ -7,6 +7,7 @@ import DiscussionBox from "../../../../components/User/DiscussionBox";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useGoogleAuth } from "../../../../context/GoogleAuthContext";
+import convertToPrettyDateFormat from "/utilities/prettyDateFormat"
 
 const SpecificQuery = () => {
   const router = useRouter();
@@ -101,7 +102,7 @@ const SpecificQuery = () => {
             <QueryStatusIndicator status={queryDetails.ticket_status} />
           )}
           <div className="border-2 text-medium-blue-1 text-xs rounded-md border-medium-blue-1 py-1 px-2 w-fit">
-            Asked on {queryDetails.asked_on.seconds}
+            Asked on {convertToPrettyDateFormat(queryDetails.asked_on.seconds)}
           </div>
           <div className="text-xs font-bold text-medium-grey">
             {mentorName ? `Assigned to ${mentorName}` : "..."}

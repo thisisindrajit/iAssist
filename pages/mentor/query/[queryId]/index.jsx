@@ -9,6 +9,7 @@ import { useGoogleAuth } from "../../../../context/GoogleAuthContext";
 import mentorLayout from "../../../../layouts/mentorLayout";
 import Swal from "sweetalert2";
 import postData from "../../../../utilities/api/postData";
+import convertToPrettyDateFormat from "/utilities/prettyDateFormat"
 
 const SpecificQuery = () => {
   const router = useRouter();
@@ -141,7 +142,7 @@ const SpecificQuery = () => {
             </div>
           )}
           <div className="border-2 text-medium-blue-1 text-xs rounded-md border-medium-blue-1 py-1 px-2 w-fit">
-            Asked on {queryDetails.asked_on.seconds}
+            Asked on {convertToPrettyDateFormat(queryDetails.asked_on.seconds)}
           </div>
           <div className="text-xs font-bold text-medium-grey">
             {studentName ? `Asked by ${studentName}` : "..."}
