@@ -1,4 +1,6 @@
-const QueryStatusIndicator = ({ status }) => {
+import Image from "next/image";
+
+const QueryStatusIndicator = ({ status, showArrow }) => {
   const statusAndRespectiveColors = {
     unresolved: "#F43C3C",
     pending: "#F43C3C",
@@ -8,15 +10,26 @@ const QueryStatusIndicator = ({ status }) => {
   };
 
   return (
-    status && <div
-      className="text-white w-fit p-1.5 rounded-md text-xs capitalize"
-      style={{
-        backgroundColor:
-          statusAndRespectiveColors[status.toString().toLowerCase()],
-      }}
-    >
-      {status}
-    </div>
+    status && (
+      <div
+        className={`text-white w-fit p-1.5 rounded-md text-xs capitalize flex items-center justify-center ${
+          showArrow && "cursor-pointer"
+        }`}
+        style={{
+          backgroundColor:
+            statusAndRespectiveColors[status.toString().toLowerCase()],
+        }}
+      >
+        {showArrow ? (
+          <div className="flex items-center">
+            <span>{status}</span>
+            <Image src="/svg/down.svg" height="18" width="18" />
+          </div>
+        ) : (
+          <div>{status}</div>
+        )}
+      </div>
+    )
   );
 };
 

@@ -7,6 +7,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useGoogleAuth } from "../../../../context/GoogleAuthContext";
 import mentorLayout from "../../../../layouts/mentorLayout";
+import Swal from "sweetalert2";
+import postData from "../../../../utilities/api/postData";
 
 const SpecificQuery = () => {
   const router = useRouter();
@@ -14,8 +16,42 @@ const SpecificQuery = () => {
   const isResolved = false;
   const { authUser, loading } = useGoogleAuth();
   const [queryDetails, setQueryDetails] = useState(null);
+  const [status, setStatus] = useState(null);
 
   const [studentName, setStudentName] = useState(null);
+
+  const onStatusUpdateHandler = async () => {
+    const inputOptions = {
+      pending: "Pending",
+      "in-progress": "In-Progress",
+      completed: "Completed",
+    };
+
+    const { value } = await Swal.fire({
+      title: "Select a status",
+      input: "radio",
+      inputOptions: inputOptions,
+      customClass: "swal-custom",
+      inputValidator: (value) => {
+        if (!value) {
+          return "You need to choose something!";
+        }
+      },
+    });
+
+    if (authUser && value) {
+      setStatus(value);
+
+      let url = `/api/query/${queryId}/updateUserField`;
+      let token = await authUser.getIdToken();
+
+      const details = {
+        ticket_status: value,
+      };
+
+      await postData(url, token, details);
+    }
+  };
 
   useEffect(() => {
     if (queryDetails) {
@@ -65,7 +101,6 @@ const SpecificQuery = () => {
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log(data);
             setQueryDetails(data);
           });
       }
@@ -98,7 +133,12 @@ const SpecificQuery = () => {
             {queryDetails.category}
           </div>
           {!isResolved && (
-            <QueryStatusIndicator status={queryDetails.ticket_status} />
+            <div onClick={onStatusUpdateHandler}>
+              <QueryStatusIndicator
+                status={status ? status : queryDetails.ticket_status}
+                showArrow
+              />
+            </div>
           )}
           <div className="border-2 text-medium-blue-1 text-xs rounded-md border-medium-blue-1 py-1 px-2 w-fit">
             Asked on {queryDetails.asked_on.seconds}
