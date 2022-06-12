@@ -1,5 +1,5 @@
 import { firebase } from "/firebase/firebaseConfig";
-import { withAuth } from "../../../../../utilities/withAuth";
+import { withAuth } from "/utilities/withAuth";
 
 export const resolved = async (userType, uid) => {
     const queryUserRef = firebase.firestore()

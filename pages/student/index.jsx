@@ -4,9 +4,11 @@ import Stats from "../../components/User/Stats";
 import StudentQueryBox from "../../components/User/StudentQueryBox";
 import studentLayout from "../../layouts/studentLayout";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useGoogleAuth } from "../../context/GoogleAuthContext";
 import Image from "next/image";
+import getData from "../../utilities/api/getData";
+import { useQuery } from "react-query";
 
 const StudentHome = () => {
   const router = useRouter();
@@ -18,108 +20,38 @@ const StudentHome = () => {
     }
   }, [authUser, loading]);
 
-  // TODO: Get data from API
-  const sampleStats = {
-    queries: "5",
-    resolvedQueries: "3",
-    unresolvedQueries: "2",
-  };
+  const getStatsData = async () => {
+    console.log(authUser)
+    const token = await authUser.getIdToken();
+    let data;
+    let countData;
+    if(authUser.userType === "student"){
+      countData = await getData(authUser.userType + "/" + authUser.uid + "/query/queryStatus/getCount", token);
+      data = await getData(authUser.userType + "/" + authUser.uid + "/query/queryStatus/all", token);
+    }
+    else{
+      countData = await getData(authUser.userType + "/" + authUser.uid + "/query/ticketStatus/getCount", token);
+      data = await getData(authUser.userType + "/" + authUser.uid + "/query/ticketStatus/all", token);
+    }
+    
+    return { data, countData }
+  }
+
+  const { data, isLoading, isError } = useQuery(["stats-details"], getStatsData, {
+    enabled: authUser ? true : false
+  })
+
+  if(!isLoading){
+    console.log(data)
+  }
+
 
   return !loading && authUser ? (
     <div>
       <Head>
         <title>{authUser.name} - Home</title>
       </Head>
-      {/* New query button */}
-      <div className="rounded-full fixed p-6 bottom-6 right-6 cursor-pointer bg-medium-purple-1 flex items-center justify-center h-10 w-10">
-        <Image src="/svg/plus.svg"layout="fill"
-            objectFit="contain" />
-      </div>
-      {/* Welcome section */}
-      <div className="text-2xl text-dark-grey">
-        ☀️ Good day, <span className="font-bold">{authUser.name}</span>
-      </div>
-      {/* Stats Section */}
-      <Stats userType="student" stats={sampleStats} />
-      {/* Unresolved Queries */}
-      <a id="unresolved"></a>
-      <TitleWithLine title="Unresolved Queries" className="mt-12 mb-4" />
-      <div className="grid grid-cols-2 gap-4">
-        <StudentQueryBox
-          title="What is useEffect in React?"
-          status="pending"
-          assignedTo="Dhilip"
-          askedOn="23/10/2021"
-          category="frontend"
-          href="/student/query/123"
-        />
-
-        <StudentQueryBox
-          title="What is useEffect in React?"
-          status="completed"
-          assignedTo="Dhilip"
-          askedOn="23/10/2021"
-          category="backend"
-          href="/student/query/123"
-        />
-        <StudentQueryBox
-          title="What is useEffect in React?"
-          status="in progress"
-          assignedTo="Dhilip"
-          askedOn="23/10/2021"
-          category="frontend"
-          href="/student/query/123"
-        />
-        <StudentQueryBox
-          title="What is useEffect in React?"
-          status="pending"
-          assignedTo="Dhilip"
-          askedOn="23/10/2021"
-          category="other"
-          href="/student/query/123"
-        />
-      </div>
-      {/* Resolved Queries */}
-      <a id="resolved"></a>
-      <TitleWithLine title="Resolved Queries" className="mt-12 mb-4" />
-      <div className="grid grid-cols-2 gap-4">
-        <StudentQueryBox
-          title="What is useEffect in React?"
-          status="pending"
-          assignedTo="Dhilip"
-          askedOn="23/10/2021"
-          category="frontend"
-          href="/student/query/123"
-          isResolved
-        />
-        <StudentQueryBox
-          title="What is useEffect in React?"
-          status="completed"
-          assignedTo="Dhilip"
-          askedOn="23/10/2021"
-          category="backend"
-          href="/student/query/123"
-          isResolved
-        />
-        <StudentQueryBox
-          title="What is useEffect in React?"
-          status="in progress"
-          assignedTo="Dhilip"
-          askedOn="23/10/2021"
-          category="frontend"
-          href="/student/query/123"
-          isResolved
-        />
-        <StudentQueryBox
-          title="What is useEffect in React?"
-          status="pending"
-          assignedTo="Dhilip"
-          askedOn="23/10/2021"
-          category="other"
-          href="/student/query/123"
-          isResolved
-        />
-      </div>
+      Test
     </div>
   ) : (
     <div>Loading...</div>

@@ -8,6 +8,7 @@ const RandomAvatar = dynamic(() => import("../RandomAvatar"), {
 });
 
 const SideBar = ({ userType }) => {
+  const user = "" //JSON.parse(localStorage.getItem("user"))["name"].split(" ")[0];
   // Show different sidebars based on different type of user
   return (
     <div className="w-1/5 bg-sidebar-grey min-h-screen fixed p-6 flex flex-col justify-between">
@@ -18,7 +19,7 @@ const SideBar = ({ userType }) => {
           <RandomAvatar className="rounded-full h-16 w-16 p-2 bg-gray-200" />
           <div>
             <div className="text-medium-grey">Welcome back,</div>
-            <div className="text-dark-grey text-lg font-bold">Indrajit</div>
+            <div className="text-dark-grey text-lg font-bold">{user}</div>
           </div>
         </div>
         {/* My Queries section */}
@@ -33,7 +34,7 @@ const SideBar = ({ userType }) => {
           <div>
             <QueryType
               title="Unresolved Queries"
-              count="5"
+              // count="5"
               href="/student#unresolved"
             />
             <QueryType title="Resolved Queries" href="/student#resolved" />

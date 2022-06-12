@@ -1,13 +1,12 @@
 import { baseURL } from "../baseUrlConfig";
 
-const postData = (url, token, userData) => {
+const getData = async (url, token) => {
     const data = await fetch(baseURL + url, {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${token}`
-          },
-        body: JSON.stringify(userData)
-    });
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+              },
+        });
     if(data){
         const jsonData = await data.json();
         return jsonData;
@@ -17,4 +16,4 @@ const postData = (url, token, userData) => {
     }
 }
 
-export default postData;
+export default getData;

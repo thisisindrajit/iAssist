@@ -16,11 +16,11 @@ const Stats = ({ userType, stats }) => {
         {userType === "student" ? (
           <div className="flex gap-2">
             <span className="text-green-500">
-              {stats.resolvedQueries} resolved queries
+              {stats.resolved} resolved queries
             </span>{" "}
             |{" "}
             <span className="text-red-400">
-              {stats.unresolvedQueries} unresolved queries
+              {stats.unresolved} unresolved queries
             </span>
           </div>
         ) : (

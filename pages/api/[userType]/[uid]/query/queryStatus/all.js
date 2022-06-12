@@ -1,6 +1,6 @@
 import { resolved } from "./resolved";
 import { unresolved } from "./unresolved";
-import { withAuth } from "../../../../../utilities/withAuth";
+import { withAuth } from "/utilities/withAuth";
 
 export const allQueries = async (userType, uid) => {
     const resolvedQueries = await resolved(userType, uid);
